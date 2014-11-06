@@ -20,10 +20,10 @@ client.calibrate(0);
 client.disableEmergency();
 
 // 音声認識させる言葉を覚えさせる
-grammar.add('ドローン?(テイクオフ|アヘッド|バック|レフト|ライト|ターン|ランディング|ストップ|アップ|ダウン|アニメーションジャンプ)');
+grammar.add('ドローン?(テイクオフ|アヘッド|バック|レフト|ライト|ターン|ランディング|ストップ|アップ|ダウン|アニメーションジャンプ|アニメーションターン|アニメーションウエイブ)');
 //以下ノイズ対応。よく出そうな単語等
 grammar.add('(ノイズ|拾う|認識|音声|解析)');
-grammar.add('(ノイズを拾う|じゅげむじゅげむ|ニンジャ|ナンデ|サン|ドーモ|株式会社|テコラス|ノード|ライン|イシュコン|コンテスト|景品|開発|おお|です|から|って|プログラム|バージョン|うん|うーむ|ただ|また|だって)');
+grammar.add('(ノイズを拾う|じゅげむじゅげむ|ニンジャ|ナンデ|サン|ドーモ|サツバツ|バイオゴリラ|ミキプルーン|株式会社|テコラス|ノード|ライン|イシュコン|コンテスト|景品|開発|おお|です|から|って|プログラム|バージョン|うん|うーむ|ただ|また|だって)');
 var kana = 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみめもやゆよらりるれろわをがぎぐげござじずぜぞだぢづでど';
 for (var i = 0; i < kana.length; ++i) {
 	grammar.add(kana[i]);
@@ -39,12 +39,13 @@ grammar.compile(function(err, result) {
 		if (str) console.log(str.slice(0).toString());
 		switch (str) {
 			case 'ドローンテイクオフ' :
+        client.stop();
         client.takeoff();
         voice.talk('離陸します');
         break;
 			case 'ドローンランディング' :
-        client.land();
         client.stop();
+        client.land();
         voice.talk('着陸します');
         break;
 			case 'ドローンアヘッド' :
@@ -98,6 +99,24 @@ grammar.compile(function(err, result) {
         client.stop();
         client.animate('flipBehind', 15);
         voice.talk('ジャンプ');
+        break;
+      case 'ドローンアニメーションターン' :
+        client.stop();
+        client.animate('turnaround', 2000);
+        client
+          .after(2000, function() {
+            this.stop();
+          });
+        voice.talk('ターン');
+        break;
+      case 'ドローンアニメーションウエイブ' :
+        client.stop();
+        client.animate('wave', 2000);
+        client
+          .after(2000, function() {
+            this.stop();
+          });
+        voice.talk('ウエイブ');
         break;
 		}
 	});
