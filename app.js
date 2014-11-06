@@ -20,10 +20,10 @@ client.calibrate(0);
 client.disableEmergency();
 
 // 音声認識させる言葉を覚えさせる
-grammar.add('ドローン?(テイクオフ|アヘッド|バック|ターン|ランディング|ストップ|アップ|ダウン|アニメーションジャンプ)');
+grammar.add('ドローン?(テイクオフ|アヘッド|バック|レフト|ライト|ターン|ランディング|ストップ|アップ|ダウン|アニメーションジャンプ)');
 //以下ノイズ対応。よく出そうな単語等
 grammar.add('(ノイズ|拾う|認識|音声|解析)');
-grammar.add('(ノイズを拾う|じゅげむじゅげむ|株式会社|テコラス|ノード|ライン|イシュコン|コンテスト|景品|開発|おお|です|から|って|プログラム|バージョン|うん|うーむ|ただ|また|だって)');
+grammar.add('(ノイズを拾う|じゅげむじゅげむ|ニンジャ|ナンデ|サン|ドーモ|株式会社|テコラス|ノード|ライン|イシュコン|コンテスト|景品|開発|おお|です|から|って|プログラム|バージョン|うん|うーむ|ただ|また|だって)');
 var kana = 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみめもやゆよらりるれろわをがぎぐげござじずぜぞだぢづでど';
 for (var i = 0; i < kana.length; ++i) {
 	grammar.add(kana[i]);
@@ -56,6 +56,16 @@ grammar.compile(function(err, result) {
         client.stop();
         client.back(0.1);
         voice.talk('後進します');
+        break;
+      case 'ドローンライト' :
+        client.stop();
+        client.right(0.1);
+        voice.talk('右へ移動します');
+        break;
+      case 'ドローンレフト' :
+        client.stop();
+        client.left(0.1);
+        voice.talk('左へ移動します');
         break;
       case 'ドローンアップ' :
         client.stop();
